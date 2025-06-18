@@ -1,0 +1,49 @@
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Relógio Digital</title>
+  <style>
+    body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #121212;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.clock-container {
+  background: #1e1e1e;
+  padding: 60px 200px;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+#clock {
+  color: #00ffcc;
+  font-size: 140px;
+  letter-spacing: 2px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="clock-container">
+    <h1 id="clock">00:00:00</h1>
+  </div>
+
+  <script>
+    function updateClock() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+  </script>
+</body>
+</html>

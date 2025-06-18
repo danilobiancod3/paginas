@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minhas Páginas</title>
+  <style>
+    :root {
+      --bg-color: #f2f2f2;
+      --text-color: #333;
+      --card-bg: #fff;
+      --card-hover: #e6f0ff;
+      --link-color: #0066cc;
+      --footer-color: #666;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #1e1e1e;
+      --text-color: #f2f2f2;
+      --card-bg: #2c2c2c;
+      --card-hover: #333;
+      --link-color: #4aa3ff;
+      --footer-color: #aaa;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Botão fixo no canto superior direito */
+    #theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      cursor: pointer;
+      font-size: 0.95rem;
+      z-index: 1000;
+      transition: background-color 0.3s;
+    }
+
+    #theme-toggle:hover {
+      background-color: var(--card-hover);
+    }
+
+    main {
+      max-width: 800px;
+      margin: 100px auto 40px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: var(--card-bg);
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: background 0.2s;
+    }
+
+    li:hover {
+      background: var(--card-hover);
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--link-color);
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+    }
+
+    footer a {
+      color: var(--footer-color);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="theme-toggle">🌙 Modo Escuro</button>
+
+  <main>
+    <h1>Páginas Inuteis</h1>
+    <ul>
+      <li><a href="jogodavelha.html" target="_blank">jogo da velha</a></li>
+      <li><a href="JogoDaCobrinha.html" target="_blank">Jogo Da Cobrinha</a></li>
+      <li><a href="relogio.html" target="_blank">relogio desktop</a></li>
+    </ul>
+  </main>
+
+  <footer>
+    <a href="https://danilobiancod3.github.io/danilo/" target="_blank">
+      2025 Stockfy - Desenvolvido por Danilo Gregorio Bianco.
+    </a>
+  </footer>
+
+  <script>
+    const toggleButton = document.getElementById('theme-toggle');
+    const currentTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      toggleButton.textContent = theme === 'dark' ? '☀️ Modo Claro' : '🌙 Modo Escuro';
+    }
+
+    if (currentTheme) {
+      setTheme(currentTheme);
+    } else if (prefersDark) {
+      setTheme('dark');
+    }
+
+    toggleButton.addEventListener('click', () => {
+      const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+  </script>
+
+</body>
+</html>
