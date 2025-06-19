@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jogo da Forca</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #inicio, #jogo {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      font-size: 16px;
+      margin: 10px;
+      max-width: 100%;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    #palavra-oculta {
+      font-size: 28px;
+      letter-spacing: 10px;
+      margin: 30px 0;
+    }
+
+    .letra-correta {
+      border-bottom: 2px solid #000;
+      display: inline-block;
+      width: 24px;
+      text-align: center;
+      font-size: 24px;
+      margin: 0 4px;
+    }
+
+    #letras-chutadas {
+      margin-top: 20px;
+      color: #c0392b;
+    }
+
+    #tentativas {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #resultado {
+      font-size: 20px;
+      margin-top: 30px;
+      color: #27ae60;
+    }
+
+    @media (max-width: 600px) {
+      #palavra-oculta {
+        font-size: 20px;
+        letter-spacing: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Jogo da Forca</h1>
+
+  <!-- Tela de inserção da palavra -->
+  <div id="inicio">
+    <input type="text" id="palavra-secreta" placeholder="Digite a palavra secreta" />
+    <br />
+    <button onclick="iniciarJogo()">Iniciar Jogo</button>
+  </div>
+
+  <!-- Tela do jogo -->
+  <div id="jogo" class="hidden">
+    <div id="palavra-oculta"></div>
+
+    <select id="modo-chute" onchange="atualizarPlaceholder()">
+      <option value="letra">Chutar Letra</option>
+      <option value="palavra">Chutar Palavra</option>
+    </select>
+    <br />
+    <input type="text" id="entrada" placeholder="Digite uma letra" maxlength="1" />
+    <br />
+    <button onclick="fazerChute()">Chutar</button>
+
+    <div id="letras-chutadas"></div>
+    <div id="tentativas">Tentativas restantes: 6</div>
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    let palavra = '';
+    let palavraArray = [];
+    let exibicao = [];
+    let letrasChutadas = [];
+    let tentativasRestantes = 6;
+    let jogoEncerrado = false;
+
+    function iniciarJogo() {
+      const input = document.getElementById('palavra-secreta');
+      palavra = input.value.trim().toUpperCase();
+      if (palavra.length < 2) {
+        alert("Digite uma palavra válida com pelo menos 2 letras.");
+        return;
+      }
+
+      palavraArray = palavra.split('');
+      exibicao = Array(palavra.length).fill('');
+      letrasChutadas = [];
+      tentativasRestantes = 6;
+      jogoEncerrado = false;
+
+      document.getElementById('inicio').classList.add('hidden');
+      document.getElementById('jogo').classList.remove('hidden');
+
+      atualizarExibicao();
+      atualizarPlaceholder();
+      document.getElementById('entrada').value = '';
+      document.getElementById('letras-chutadas').innerText = '';
+      document.getElementById('tentativas').innerText = `Tentativas restantes: ${tentativasRestantes}`;
+      document.getElementById('resultado').innerText = '';
+    }
+
+    function atualizarExibicao() {
+      const container = document.getElementById('palavra-oculta');
+      container.innerHTML = '';
+      exibicao.forEach(letra => {
+        const span = document.createElement('span');
+        span.classList.add('letra-correta');
+        span.textContent = letra || '_';
+        container.appendChild(span);
+      });
+    }
+
+    function atualizarPlaceholder() {
+      const modo = document.getElementById('modo-chute').value;
+      const entrada = document.getElementById('entrada');
+      if (modo === 'letra') {
+        entrada.placeholder = 'Digite uma letra';
+        entrada.maxLength = 1;
+      } else {
+        entrada.placeholder = `Digite a palavra (${palavra.length} letras)`;
+        entrada.maxLength = palavra.length;
+      }
+    }
+
+    function fazerChute() {
+      if (jogoEncerrado) return;
+
+      const modo = document.getElementById('modo-chute').value;
+      const entrada = document.getElementById('entrada');
+      const chute = entrada.value.trim().toUpperCase();
+      entrada.value = '';
+
+      if (modo === 'letra') {
+        if (chute.length !== 1 || !/^[A-Z]$/.test(chute)) {
+          alert("Digite apenas uma letra válida.");
+          return;
+        }
+
+        if (letrasChutadas.includes(chute)) {
+          alert("Você já chutou essa letra.");
+          return;
+        }
+
+        letrasChutadas.push(chute);
+        document.getElementById('letras-chutadas').innerText = "Letras chutadas: " + letrasChutadas.join(', ');
+
+        if (palavra.includes(chute)) {
+          palavraArray.forEach((letra, i) => {
+            if (letra === chute) exibicao[i] = chute;
+          });
+        } else {
+          tentativasRestantes--;
+        }
+      } else {
+        if (chute.length !== palavra.length) {
+          alert(`A palavra deve ter exatamente ${palavra.length} letras.`);
+          return;
+        }
+
+        if (chute === palavra) {
+          exibicao = palavraArray.slice();
+        } else {
+          tentativasRestantes--;
+        }
+      }
+
+      atualizarExibicao();
+      document.getElementById('tentativas').innerText = `Tentativas restantes: ${tentativasRestantes}`;
+
+      verificarFimDeJogo();
+    }
+
+    function verificarFimDeJogo() {
+      if (!exibicao.includes('')) {
+        document.getElementById('resultado').innerText = "🎉 Parabéns! Você venceu!";
+        jogoEncerrado = true;
+      } else if (tentativasRestantes <= 0) {
+        document.getElementById('resultado').innerText = `😢 Você perdeu! A palavra era "${palavra}".`;
+        jogoEncerrado = true;
+      }
+    }
+  </script>
+</body>
+</html>
