@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="https://www.pngarts.com/files/3/Pokeball-PNG-Transparent-Image.png" type="image/png"> <!-- Ícone da aba do navegador -->
+    <title>PokéDex</title>
+    <style>
+      /* Início do bloco de estilos CSS */
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Define a família da fonte */
+        margin: 0; /* Remove a margem padrão do corpo */
+        display: flex; /* Habilita o modelo de layout flexbox */
+        flex-direction: column; /* Organiza os itens flex em coluna */
+        align-items: center; /* Centraliza os itens horizontalmente */
+        padding: 2rem; /* Adiciona preenchimento interno */
+        color: #333; /* Define a cor do texto principal */
+        min-height: 100vh; /* Garante que o corpo ocupe pelo menos 100% da altura da viewport */
+        background:
+          /* Define um plano de fundo com duas camadas */ url(https://wallpapers-clan.com/wp-content/uploads/2024/08/ash-pikachu-adventure-pokemon-desktop-wallpaper-cover.jpg)
+            no-repeat center center fixed,
+          /* Imagem de fundo, sem repetição, centralizada e fixa */
+            linear-gradient(135deg, #f5f7fa, #c3cfe2); /* Gradiente linear como segunda camada de fundo */
+        background-size: cover, 200% 200%; /* Define o tamanho da imagem e do gradiente */
+        animation: gradientAnimation 180s ease infinite; /* Aplica uma animação ao gradiente */
+      }
+      @keyframes gradientAnimation {
+        /* Define a animação do gradiente */
+        0% {
+          background-position: 0% 50%;
+        } /* Posição inicial do gradiente */
+        50% {
+          background-position: 100% 50%;
+        } /* Posição intermediária do gradiente */
+        100% {
+          background-position: 0% 50%;
+        } /* Posição final do gradiente (volta ao início) */
+      }
+      h1 {
+        margin-bottom: 0.5rem; /* Margem inferior do título */
+        font-size: 3rem; /* Tamanho da fonte do título */
+        color: #f62d14; /* Cor do título (vermelho vibrante) */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra no texto do título */
+        letter-spacing: 2px; /* Espaçamento entre as letras do título */
+      }
+      .slogan {
+        margin-bottom: 2rem; /* Margem inferior do slogan */
+        font-size: 1.2rem; /* Tamanho da fonte do slogan */
+        color: #ee8130; /* Cor do slogan (laranja) */
+        font-style: italic; /* Estilo itálico para o slogan */
+      }
+      .controls {
+        display: flex; /* Habilita flexbox para os controles */
+        gap: 0.8rem; /* Espaçamento entre os itens flex */
+        margin-bottom: 2.5rem; /* Margem inferior dos controles */
+        flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+        justify-content: center; /* Centraliza os itens horizontalmente */
+      }
+      input {
+        padding: 0.7rem; /* Preenchimento interno do input */
+        font-size: 1.1rem; /* Tamanho da fonte do input */
+        border: 2px solid #aaa; /* Borda do input */
+        border-radius: 0.7rem; /* Arredondamento da borda do input */
+        width: 220px; /* Largura fixa do input */
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra interna do input */
+        transition: border-color 0.3s; /* Transição suave na cor da borda */
+      }
+      input:focus {
+        border-color: #3b4cca; /* Cor da borda ao focar no input (azul Pokémon) */
+        outline: none; /* Remove o contorno padrão do foco */
+      }
+      button {
+        padding: 0.7rem 1.4rem; /* Preenchimento interno do botão */
+        font-size: 1.1rem; /* Tamanho da fonte do botão */
+        border: none; /* Remove a borda do botão */
+        border-radius: 0.7rem; /* Arredondamento da borda do botão */
+        background-color: #ffcb05; /* Cor de fundo do botão (amarelo Pokémon) */
+        color: #333; /* Cor do texto do botão */
+        cursor: pointer; /* Muda o cursor para "ponteiro" ao passar sobre o botão */
+        transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Transições suaves para o botão */
+        font-weight: bold; /* Deixa o texto do botão em negrito */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra do botão */
+      }
+      button:hover {
+        background-color: #f5b700; /* Cor de fundo do botão ao passar o mouse */
+        transform: translateY(-2px); /* Move o botão ligeiramente para cima ao passar o mouse */
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Aumenta a sombra do botão ao passar o mouse */
+      }
+      button:active {
+        transform: translateY(0); /* Volta o botão à posição original ao ser clicado */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduz a sombra do botão ao ser clicado */
+      }
+      .card {
+        background: #fff; /* Cor de fundo do card (branco) */
+        border-radius: 1.5rem; /* Arredondamento da borda do card */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra do card */
+        padding: 2rem; /* Preenchimento interno do card */
+        max-width: 380px; /* Largura máxima do card */
+        text-align: center; /* Alinha o texto ao centro dentro do card */
+        animation: fadeIn 0.6s ease-out; /* Aplica a animação de fade-in ao card */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transições suaves para o card */
+      }
+      .card:hover {
+        transform: translateY(-5px) scale(1.01); /* Move o card ligeiramente para cima e aumenta um pouco ao passar o mouse */
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Aumenta a sombra do card ao passar o mouse */
+      }
+      .card h2 {
+        color: #3b4cca; /* Cor do título do Pokémon no card (azul Pokémon) */
+        margin-top: 0; /* Remove a margem superior do título */
+        margin-bottom: 1rem; /* Margem inferior do título */
+        font-size: 2rem; /* Tamanho da fonte do título do Pokémon */
+        text-transform: capitalize; /* Capitaliza a primeira letra de cada palavra */
+      }
+      .card img {
+        width: 180px; /* Largura da imagem do Pokémon */
+        height: 180px; /* Altura da imagem do Pokémon */
+        object-fit: contain; /* Redimensiona a imagem para caber sem cortar */
+        margin-bottom: 1rem; /* Margem inferior da imagem */
+        filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.1)); /* Sombra na imagem */
+      }
+      .types {
+        display: flex; /* Habilita flexbox para os tipos */
+        justify-content: center; /* Centraliza os tipos horizontalmente */
+        gap: 0.7rem; /* Espaçamento entre os tipos */
+        margin: 1rem 0; /* Margem superior e inferior dos tipos */
+        flex-wrap: wrap; /* Permite que os tipos quebrem para a próxima linha */
+      }
+      .type {
+        padding: 0.4rem 0.8rem; /* Preenchimento interno do tipo */
+        border-radius: 0.8rem; /* Arredondamento da borda do tipo */
+        color: #fff; /* Cor do texto do tipo (branco) */
+        font-size: 1rem; /* Tamanho da fonte do tipo */
+        text-transform: uppercase; /* Converte o texto do tipo para maiúsculas */
+        font-weight: bold; /* Deixa o texto do tipo em negrito */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra do tipo */
+        transition: transform 0.2s; /* Transição suave para o tipo */
+      }
+      .type:hover {
+        transform: translateY(-2px); /* Move o tipo ligeiramente para cima ao passar o mouse */
+      }
+      .stats {
+        text-align: left; /* Alinha o texto das estatísticas à esquerda */
+        margin-top: 1.5rem; /* Margem superior das estatísticas */
+        padding: 0 1rem; /* Preenchimento lateral das estatísticas */
+      }
+      .stat {
+        display: flex; /* Habilita flexbox para cada estatística */
+        align-items: center; /* Alinha os itens da estatística verticalmente ao centro */
+        margin-bottom: 0.6rem; /* Margem inferior de cada estatística */
+        font-size: 1rem; /* Tamanho da fonte da estatística */
+        font-weight: 500; /* Peso da fonte da estatística */
+      }
+      .stat span:first-child {
+        flex-basis: 90px; /* Largura base do nome da estatística */
+        text-transform: capitalize; /* Capitaliza a primeira letra do nome da estatística */
+        color: #555; /* Cor do texto do nome da estatística */
+      }
+      .bar {
+        height: 10px; /* Altura da barra de progresso */
+        border-radius: 5px; /* Arredondamento da borda da barra */
+        background: #e0e0e0; /* Cor de fundo da barra vazia */
+        flex: 1; /* Permite que a barra ocupe o espaço restante */
+        margin-left: 0.8rem; /* Margem esquerda da barra */
+        overflow: hidden; /* Esconde qualquer conteúdo que exceda a barra */
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra interna da barra */
+      }
+      .bar-inner {
+        height: 100%; /* Altura da barra de progresso preenchida */
+        background: #3b4cca; /* Cor de fundo da barra de progresso preenchida (azul Pokémon) */
+        transition: width 0.6s ease-out; /* Transição suave na largura da barra */
+        border-radius: 5px; /* Arredondamento da borda da barra preenchida */
+      }
+      .stat span:last-child {
+        min-width: 30px; /* Largura mínima para o valor da estatística */
+        text-align: right; /* Alinha o valor da estatística à direita */
+        margin-left: 0.5rem; /* Margem esquerda do valor da estatística */
+        font-weight: bold; /* Deixa o valor da estatística em negrito */
+        color: #3b4cca; /* Cor do valor da estatística (azul Pokémon) */
+      }
+      .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1); /* Borda do spinner */
+        border-top: 4px solid #3b4cca; /* Borda superior do spinner (azul Pokémon) */
+        border-radius: 50%; /* Torna o spinner circular */
+        width: 40px; /* Largura do spinner */
+        height: 40px; /* Altura do spinner */
+        animation: spin 1s linear infinite; /* Aplica a animação de rotação ao spinner */
+        margin-top: 2rem; /* Margem superior do spinner */
+      }
+      @keyframes spin {
+        /* Define a animação de rotação do spinner */
+        0% {
+          transform: rotate(0deg);
+        } /* Início da rotação */
+        100% {
+          transform: rotate(360deg);
+        } /* Fim da rotação (completa uma volta) */
+      }
+      @keyframes fadeIn {
+        /* Define a animação de fade-in */
+        from {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+        } /* Estado inicial (invisível, deslocado e menor) */
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        } /* Estado final (visível, posição e tamanho normal) */
+      }
+      @media (max-width: 600px) {
+        /* Media query para telas com largura máxima de 600px */
+        h1 {
+          font-size: 2rem;
+        } /* Reduz o tamanho do título em telas menores */
+        .slogan {
+          font-size: 1rem;
+        } /* Reduz o tamanho do slogan em telas menores */
+        .controls {
+          flex-direction: column; /* Altera a direção dos itens flex para coluna */
+          align-items: center; /* Centraliza os itens em coluna */
+        }
+        input,
+        button {
+          width: 80%; /* Define a largura do input e botão para 80% */
+          max-width: 250px; /* Define a largura máxima do input e botão */
+        }
+        .card {
+          padding: 1.5rem; /* Reduz o preenchimento do card em telas menores */
+          max-width: 90%; /* Define a largura máxima do card para 90% */
+        }
+      }
+      /* Fim do bloco de estilos CSS */
+    </style>
+  </head>
+  <body>
+    <h1>PokéDex</h1>
+    <p class="slogan">Seu guia definitivo para o mundo Pokémon!</p>
+    <div class="controls">
+      <input type="text" id="search" placeholder="Nome ou ID do Pokémon" />
+      <button id="btn-search">Buscar</button>
+      <button id="btn-random">Aleatório</button>
+      </div>
+    <div id="card-container"></div>
+    <script>
+      // Início do bloco de script JavaScript
+      const apiUrl = 'https://pokeapi.co/api/v2/pokemon/'; // URL base da API Pokémon
+      const searchInput = document.getElementById('search'); // Pega o elemento input de busca
+      const btnSearch = document.getElementById('btn-search'); // Pega o botão de busca
+      const btnRandom = document.getElementById('btn-random'); // Pega o botão de Pokémon aleatório
+      const cardContainer = document.getElementById('card-container'); // Pega o container do card
+
+      btnSearch.addEventListener('click', () => {
+        // Adiciona um ouvinte de evento de clique ao botão de busca
+        const query = searchInput.value.trim().toLowerCase(); // Pega o valor do input, remove espaços e converte para minúsculas
+        if (query) fetchPokemon(query); // Se houver um valor, chama a função fetchPokemon
+      });
+
+      searchInput.addEventListener('keypress', (e) => {
+        // Adiciona um ouvinte de evento de teclado ao input de busca
+        if (e.key === 'Enter') {
+          // Se a tecla pressionada for "Enter"
+          btnSearch.click(); // Simula um clique no botão de busca
+        }
+      });
+
+      btnRandom.addEventListener('click', () => {
+        // Adiciona um ouvinte de evento de clique ao botão aleatório
+        document.getElementById('search').value = ''; // Limpa o valor do input de busca
+        const randomId = Math.floor(Math.random() * 898) + 1; // Gera um ID aleatório entre 1 e 898
+        fetchPokemon(randomId); // Chama a função fetchPokemon com o ID aleatório
+      });
+
+      async function fetchPokemon(idOrName) {
+        // Função assíncrona para buscar dados do Pokémon na API
+        cardContainer.innerHTML = '<div class="spinner"></div>'; // Exibe um spinner de carregamento no container
+        try {
+          const res = await fetch(apiUrl + idOrName); // Faz a requisição à API usando o ID ou nome
+          if (!res.ok)
+            throw new Error('Pokémon não encontrado. Tente novamente!'); // Lança um erro se a resposta não for OK
+          const data = await res.json(); // Converte a resposta para JSON
+          renderCard(data); // Chama a função para renderizar o card com os dados recebidos
+        } catch (err) {
+          cardContainer.innerHTML = `<p style="color:#e74c3c; font-weight: bold; animation: fadeIn 0.5s;">${err.message}</p>`; // Exibe a mensagem de erro
+        }
+      }
+
+      function renderCard(p) {
+        // Função para renderizar o card do Pokémon
+        const typesHTML = p.types
+          .map(
+            (t) =>
+              `<span class="type" style="background:${typeColor(t.type.name)}">${capitalize(t.type.name)}</span>`,
+          )
+          .join(''); // Gera o HTML para os tipos do Pokémon, aplicando cores e capitalização
+        const statsHTML = p.stats
+          .map((s) => {
+            // Mapeia as estatísticas para gerar o HTML
+            const pct = (s.base_stat / 255) * 100; // Calcula a porcentagem da estatística base (máx. 255)
+            return `
+          <div class="stat">
+            <span>${capitalize(s.stat.name.replace('-', ' '))}</span>
+            <div class="bar"><div class="bar-inner" style="width:${Math.min(pct, 100)}%"></div></div>
+            <span>${s.base_stat}</span>
+          </div>
+        `;
+          })
+          .join(''); // Une as strings HTML das estatísticas
+
+        cardContainer.innerHTML = `
+        <div class="card">
+          <h2>#${p.id} ${capitalize(p.name)}</h2>
+          <img src="${p.sprites.other['official-artwork'].front_default}" alt="${p.name}" />
+          <div class="types">${typesHTML}</div>
+          <div class="stats">${statsHTML}</div>
+        </div>
+      `; // Insere o HTML completo do card no container
+      }
+
+      function capitalize(str) {
+        // Função auxiliar para capitalizar a primeira letra de uma string
+        return str.charAt(0).toUpperCase() + str.slice(1); // Retorna a string com a primeira letra maiúscula
+      }
+
+      function typeColor(type) {
+        // Função para retornar a cor correspondente a cada tipo de Pokémon
+        const colors = {
+          normal: '#A8A77A',
+          fire: '#EE8130',
+          water: '#6390F0',
+          electric: '#F7D02C',
+          grass: '#7AC74C',
+          ice: '#96D9D6',
+          fighting: '#C22E28',
+          poison: '#A33EA1',
+          ground: '#E2BF65',
+          flying: '#A98FF3',
+          psychic: '#F95587',
+          bug: '#A6B91A',
+          rock: '#B6A136',
+          ghost: '#735797',
+          dragon: '#6F35FC',
+          dark: '#705746',
+          steel: '#B7B7CE',
+          fairy: '#D685AD',
+        }; // Objeto com as cores para cada tipo
+        return colors[type] || '#777'; // Retorna a cor do tipo ou um cinza padrão se não encontrar
+      }
+      // Fim do bloco de script JavaScript
+    </script>
+  </body>
+</html>
